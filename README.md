@@ -2,8 +2,7 @@ eCommerce website
 Front-end: basic Front-end html css bootstrap template
 Back-end: Spring Boot
 
-Need to add:
-- Search Product in admin site
+Todo list:
 - user management, Add admin
 - Order
 - Add orderStatus and orders tables

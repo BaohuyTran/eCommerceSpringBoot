@@ -82,8 +82,6 @@ public class AdminController {
     //Product
     @GetMapping("/products")
     public String getProducts(Model model) {
-//        model.addAttribute("products", productService.getAllProducts(""));
-        
         return findPaginated(1, "name", "asc", model);
     }
     @GetMapping("/products/add")

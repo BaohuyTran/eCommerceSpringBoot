@@ -57,10 +57,10 @@ public class HomeController {
     }
     
     @GetMapping("/shop/search")
-    public String shopByKeyword(Model model, @RequestParam(required = false) String keyword, @RequestParam(name = "sort", required = false) String sort) {
+    public String shopByKeyword(Model model, @RequestParam(required = false) String keyword) {
         if (keyword == null) {
             model.addAttribute("categories", categoryService.getAllCategories());
-            model.addAttribute("products", productService.getAllProducts(sort));
+            model.addAttribute("products", productService.getAllProducts(""));
             model.addAttribute("cartCount", GlobalData.cart.size());
         } else {
             model.addAttribute("products", productService.findProductByKeyword(keyword));
