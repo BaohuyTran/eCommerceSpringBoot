@@ -1,0 +1,6 @@
+File E:/PracticeProject/eCommerce/db.mv.db, 40960 bytes, 0 MB
+0000 fileHeader H:2,block:9,blockSize:1000,chunk:2869,clean:1,created:18cda6dae04,format:3,version:2869,fletcher:f4799e94
+1000 fileHeader H:2,block:9,blockSize:1000,chunk:2869,clean:1,created:18cda6dae04,format:3,version:2869,fletcher:f4799e94
+
+2000 chunkHeader chunk:2866,block:0,len:3,map:1d8,max:3410,next:6,pages:12,root:a19800009b692,time:245d5190,version:2866,pinCount:0
++00af leaf compressed, map 0, 320 entries, 35 bytes, maxLen 30
