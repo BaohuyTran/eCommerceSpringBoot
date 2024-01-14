@@ -57,6 +57,38 @@
                     <li class="list-group-item" th:text="${category.name}"></li>
                 </a>
             </ul>
+            <br />
+            <h4>Sort by:</h4>
+            <form th:action="@{/shop}" method="get" id="sortForm">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="sort" id="sortPriceAsc" value="priceAsc" th:checked="${sort == 'priceAsc'}" 
+                        onclick="document.getElementById('sortForm').submit();">
+                    <label class="form-check-label" for="sortPriceAsc">
+                        Price Low to High
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="sort" id="sortPriceDesc" value="priceDesc" th:checked="${sort == 'priceDesc'}"
+                        onclick="document.getElementById('sortForm').submit();">
+                    <label class="form-check-label" for="sortPriceDesc">
+                        Price High to Low
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="sort" id="sortNameAsc" value="nameAsc" th:checked="${sort == 'nameAsc'}"
+                        onclick="document.getElementById('sortForm').submit();">
+                    <label class="form-check-label" for="sortNameAsc">
+                        Name A -> Z
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="sort" id="sortNameDesc" value="nameDesc" th:checked="${sort == 'nameDesc'}"
+                        onclick="document.getElementById('sortForm').submit();">
+                    <label class="form-check-label" for="sortNameDesc">
+                        Name Z -> A
+                    </label>
+                </div>
+            </form>
         </div>
         <div class="col-sm-9">
             <form th:action="@{/shop/search}" method="get">

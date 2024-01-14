@@ -80,7 +80,7 @@ public class AdminController {
     //Product
     @GetMapping("/products")
     public String getProducts(Model model) {
-        model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("products", productService.getAllProducts(""));
         return "products";
     }
     @GetMapping("/products/add")

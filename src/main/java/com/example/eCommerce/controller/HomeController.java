@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -33,9 +33,9 @@ public class HomeController {
 //    }
     
     @GetMapping({"/", "/shop"})
-    public String shop(Model model) {
+    public String shop(Model model, @RequestParam(name = "sort", required = false) String sort) {
         model.addAttribute("categories", categoryService.getAllCategories());
-        model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("products", productService.getAllProducts(sort));
         model.addAttribute("cartCount", GlobalData.cart.size());
         return "shop";
     }
@@ -57,10 +57,10 @@ public class HomeController {
     }
     
     @GetMapping("/shop/search")
-    public String shopByKeyword(Model model, @RequestParam(required = false) String keyword) {
+    public String shopByKeyword(Model model, @RequestParam(required = false) String keyword, @RequestParam(name = "sort", required = false) String sort) {
         if (keyword == null) {
             model.addAttribute("categories", categoryService.getAllCategories());
-            model.addAttribute("products", productService.getAllProducts());
+            model.addAttribute("products", productService.getAllProducts(sort));
             model.addAttribute("cartCount", GlobalData.cart.size());
         } else {
             model.addAttribute("products", productService.findProductByKeyword(keyword));

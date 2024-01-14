@@ -6,8 +6,10 @@ package com.example.eCommerce.service;
 
 import com.example.eCommerce.model.Product;
 import com.example.eCommerce.repository.ProductRepository;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +22,28 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
     
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<Product> getAllProducts(String sort) {
+        List<Product> products = productRepository.findAll();
+        
+        if ("priceAsc".equals(sort)) {
+            return products.stream()
+                    .sorted(Comparator.comparing(Product::getPrice))
+                    .collect(Collectors.toList());
+        } else if ("priceDesc".equals(sort)) {
+            return products.stream()
+                    .sorted(Comparator.comparing(Product::getPrice).reversed())
+                    .collect(Collectors.toList());
+        } else if ("nameAsc".equals(sort)) {
+            return products.stream()
+                    .sorted(Comparator.comparing(Product::getName))
+                    .collect(Collectors.toList());
+        } else if ("nameDesc".equals(sort)) {
+            return products.stream()
+                    .sorted(Comparator.comparing(Product::getName).reversed())
+                    .collect(Collectors.toList());
+        }
+        
+        return products;
     }
     
     public void addProduct(Product product) {
@@ -37,10 +59,14 @@ public class ProductService {
     }
     
     public List<Product> getAllProductByCategoryId(int id) {
-        return productRepository.findAllByCategory_Id(id);
+        List<Product> products = productRepository.findAllByCategory_Id(id);
+        
+        return products;
     }
     
     public List<Product> findProductByKeyword(String keyword) {
-        return productRepository.findByKeyword(keyword);
+        List<Product> products = productRepository.findByKeyword(keyword);
+ 
+        return products;
     }
 }
