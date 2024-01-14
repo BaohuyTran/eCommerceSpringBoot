@@ -13,8 +13,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,8 +82,9 @@ public class AdminController {
     //Product
     @GetMapping("/products")
     public String getProducts(Model model) {
-        model.addAttribute("products", productService.getAllProducts(""));
-        return "products";
+//        model.addAttribute("products", productService.getAllProducts(""));
+        
+        return findPaginated(1, "name", "asc", model);
     }
     @GetMapping("/products/add")
     public String getProductAddForm(Model model) {
@@ -136,5 +139,30 @@ public class AdminController {
         model.addAttribute("productDTO", productDTO);
         
         return "productsAdd";
+    }
+    
+    @GetMapping("/products/page{pageNo}")
+    public String findPaginated(
+            @PathVariable (value = "pageNo") int pageNo, 
+            @RequestParam("sortField") String sortField, 
+            @RequestParam("sortDir") String sortDir, 
+            Model model
+    ) {
+        int pageSize = 5;
+        
+        Page<Product> page = productService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        List<Product> products = page.getContent();
+        
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        
+        model.addAttribute("products", products);
+        
+        return "products";
     }
 }
