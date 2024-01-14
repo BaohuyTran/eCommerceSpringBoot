@@ -3,7 +3,7 @@ Front-end: basic Front-end html css bootstrap template
 Back-end: Spring Boot
 
 Need to add:
-- Sort Product by Price, name in admin site
+- Search Product in admin site
 - user management, Add admin
 - Order
 - Add orderStatus and orders tables
