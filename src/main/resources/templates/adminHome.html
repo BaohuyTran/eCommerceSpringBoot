@@ -45,10 +45,11 @@
 </nav>
 <div class="jumbotron text-center">
     <h1 class="display-4">Welcome back, Admin</h1>
-    <p>Easily manage your data from this admin <mark>CMS</mark></p>
+    <p>Easily manage your data from this admin</p>
 </div>
 <div class="container-fluid">
     <div class="row">
+        <!--Categories-->
         <div class="col-sm-3 pt-3" >
             <div class="card" style="background-color:white;">
                 <div class="card-body">
@@ -59,12 +60,35 @@
                 </div>
             </div>
         </div>
+        <!--Products-->
         <div class="col-sm-3 pt-3" >
             <div class="card" style="background-color:white;">
                 <div class="card-body">
                     <h4 class="card-title">Products</h4>
                     <p class="card-text">Manage all the products here.</p>
                     <a href="#" th:href="@{/admin/products}" class="card-link btn btn-primary">Manage</a>
+
+                </div>
+            </div>
+        </div>
+        <!--Users-->
+        <div class="col-sm-3 pt-3" >
+            <div class="card" style="background-color:white;">
+                <div class="card-body">
+                    <h4 class="card-title">Users</h4>
+                    <p class="card-text">Manage all the users here.</p>
+                    <a href="#" th:href="@{/admin/users}" class="card-link btn btn-primary">Manage</a>
+
+                </div>
+            </div>
+        </div>
+        <!--Orders-->
+        <div class="col-sm-3 pt-3" >
+            <div class="card" style="background-color:white;">
+                <div class="card-body">
+                    <h4 class="card-title">Orders</h4>
+                    <p class="card-text">Process all your orders here.</p>
+                    <a href="#" th:href="@{/admin/orders}" class="card-link btn btn-primary">Manage</a>
 
                 </div>
             </div>

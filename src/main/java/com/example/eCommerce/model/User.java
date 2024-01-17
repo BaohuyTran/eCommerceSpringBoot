@@ -13,11 +13,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+//import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
+import javax.persistence.ManyToOne;
 import lombok.Data;
 
 /**
@@ -47,7 +48,7 @@ public class User {
 //    @NotEmpty
     private String password;
     
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = {
@@ -57,14 +58,14 @@ public class User {
                 @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")
             }
     )
-    private List<Role> roles;
+    private Role role;
 
     public User(User user) {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.roles = user.getRoles();
+        this.role = user.getRole();
     }
 
     public User() {}

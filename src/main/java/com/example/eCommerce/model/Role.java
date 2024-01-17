@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
+import javax.persistence.OneToMany;
 import lombok.Data;
 
 /**
@@ -31,6 +32,6 @@ public class Role {
     @Column(nullable = false, unique = true)
     private String role;
     
-    @ManyToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "role")
     private List<User> users;
 }

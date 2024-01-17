@@ -5,10 +5,14 @@
 package com.example.eCommerce.controller;
 
 import com.example.eCommerce.dto.ProductDTO;
+import com.example.eCommerce.dto.UserDTO;
 import com.example.eCommerce.model.Category;
 import com.example.eCommerce.model.Product;
+import com.example.eCommerce.model.User;
 import com.example.eCommerce.service.CategoryService;
+import com.example.eCommerce.service.RoleService;
 import com.example.eCommerce.service.ProductService;
+import com.example.eCommerce.service.UserService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +46,12 @@ public class AdminController {
     CategoryService categoryService;
     @Autowired
     ProductService productService;
+    @Autowired
+    RoleService roleService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     
     @GetMapping("")
     public String adminHome() {
@@ -82,7 +93,7 @@ public class AdminController {
     //Product
     @GetMapping("/products")
     public String getProducts(Model model) {
-        return findPaginated(1, "name", "asc", model);
+        return findProductPaginated(1, "name", "asc", model);
     }
     @GetMapping("/products/add")
     public String getProductAddForm(Model model) {
@@ -140,7 +151,7 @@ public class AdminController {
     }
     
     @GetMapping("/products/page{pageNo}")
-    public String findPaginated(
+    public String findProductPaginated(
             @PathVariable (value = "pageNo") int pageNo, 
             @RequestParam("sortField") String sortField, 
             @RequestParam("sortDir") String sortDir, 
@@ -162,5 +173,76 @@ public class AdminController {
         model.addAttribute("products", products);
         
         return "products";
+    }
+    
+    // Users
+    @GetMapping("/users")
+    public String getUsers(Model model) {
+        return findUserPaginated(1, "firstName", "asc", model);
+    }
+    
+    @GetMapping("/users/page{pageNo}")
+    public String findUserPaginated(
+            @PathVariable (value = "pageNo") int pageNo, 
+            @RequestParam("sortField") String sortField, 
+            @RequestParam("sortDir") String sortDir, 
+            Model model
+    ) {
+        int pageSize = 5;
+        
+        Page<User> page = userService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        List<User> users = page.getContent();
+        
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        
+        model.addAttribute("users", users);
+        
+        return "users";
+    }
+    @GetMapping("/users/add")
+    public String getUserAddForm(Model model) {
+        model.addAttribute("userDTO", new UserDTO());
+        model.addAttribute("roles", roleService.getAllRoles());
+        return "usersAdd";
+    }
+    @PostMapping("/users/add")
+    public String postUserAdd(@ModelAttribute("userDTO")UserDTO userDTO) {
+        User user = new User();
+        
+        user.setId(userDTO.getId());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setRole(roleService.getRoleById(userDTO.getRoleId()).get());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword())); //authenticate?
+
+        userService.addUser(user);
+        return "redirect:/admin/users";
+    }
+    @GetMapping("/users/delete/{id}")
+    public String deleteUser(@PathVariable int id) {
+        userService.removeUserById(id);
+        return "redirect:/admin/users";
+    }
+    @GetMapping("/users/update/{id}")
+    public String updateUser(@PathVariable int id, Model model) {
+        User user = userService.getUserById(id).get();
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setRoleId(user.getRole().getId());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setPassword("");
+        
+        model.addAttribute("roles", roleService.getAllRoles());
+        model.addAttribute("userDTO", userDTO);
+        
+        return "usersAdd";
     }
 }

@@ -24,9 +24,12 @@ public class UserAuthentication extends User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorityList = new ArrayList<>();
-        super.getRoles().forEach(role -> {
-            authorityList.add(new SimpleGrantedAuthority(role.getRole()));
-        });
+//        super.getRoles().forEach(role -> {
+//            authorityList.add(new SimpleGrantedAuthority(role.getRole()));
+//        });
+
+        Role role = super.getRole();
+        authorityList.add(new SimpleGrantedAuthority(role.getRole()));
         return authorityList;
     }
 
