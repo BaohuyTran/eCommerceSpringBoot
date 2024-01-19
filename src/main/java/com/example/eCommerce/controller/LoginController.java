@@ -9,9 +9,6 @@ import com.example.eCommerce.model.Role;
 import com.example.eCommerce.model.User;
 import com.example.eCommerce.repository.RoleRepository;
 import com.example.eCommerce.repository.UserRepository;
-
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +32,7 @@ public class LoginController {
     RoleRepository roleRepository;
     
     @GetMapping("/login")
-    public String login() {
+    public String login() {        
         GlobalData.cart.clear();
         return "login";
     }

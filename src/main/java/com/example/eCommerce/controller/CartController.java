@@ -4,6 +4,7 @@
  */
 package com.example.eCommerce.controller;
 
+import com.example.eCommerce.dto.OrderDTO;
 import com.example.eCommerce.global.GlobalData;
 import com.example.eCommerce.model.Product;
 import com.example.eCommerce.service.ProductService;
@@ -42,12 +43,5 @@ public class CartController {
     public String cartItemRemove(@PathVariable int index) {
         GlobalData.cart.remove(index);
         return "redirect:/cart";
-    }
-    
-    @GetMapping("/checkout")
-    public String checkout(Model model) {
-        model.addAttribute("total", GlobalData.cart.stream().mapToDouble(Product::getPrice).sum());
-        
-        return "checkout";
     }
 }

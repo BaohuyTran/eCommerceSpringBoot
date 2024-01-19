@@ -5,6 +5,7 @@
 package com.example.eCommerce.model;
 
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,18 +34,16 @@ public class Order {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
     
-    @ManyToMany
-    @JoinTable(
-        name = "order_product",
-        joinColumns = @JoinColumn(name = "order_id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_ids", referencedColumnName = "id")
     private List<Product> products;
     
     private double price;
     private String address;
     private String postcode;
     private String phone;
+    
+    @Column(length = 1000) // Adjust the length accordingly
     private String description;
     
     @ManyToOne(fetch = FetchType.LAZY)

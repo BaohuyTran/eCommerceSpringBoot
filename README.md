@@ -3,8 +3,6 @@ eCommerce website
 - Back-end: Spring Boot
 
 Todo list:
-- Order
-- Add orderStatus and orders tables
-- Admin manage the orders (received, delivering, deliverd)
+- update order status (received, delivering, deliverd)
 - User check their orders status (received, delivering, deliverd)
 - Add rating system

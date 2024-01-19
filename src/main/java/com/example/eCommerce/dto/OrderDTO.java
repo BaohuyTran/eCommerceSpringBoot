@@ -15,7 +15,7 @@ import lombok.Data;
 public class OrderDTO {
     private int orderId;
     private int userId;
-    private List<Integer> productIds;
+    private List<Long> productIds;
     private double price;
     private String address;
     private String postcode;

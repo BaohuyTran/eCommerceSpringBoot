@@ -5,6 +5,7 @@
 package com.example.eCommerce.global;
 
 import com.example.eCommerce.model.Product;
+import com.example.eCommerce.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  */
 public class GlobalData {
     public static List<Product> cart;
+    public static User user;
     static {
         cart = new ArrayList<Product>();
     }

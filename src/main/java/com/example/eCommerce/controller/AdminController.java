@@ -7,9 +7,11 @@ package com.example.eCommerce.controller;
 import com.example.eCommerce.dto.ProductDTO;
 import com.example.eCommerce.dto.UserDTO;
 import com.example.eCommerce.model.Category;
+import com.example.eCommerce.model.Order;
 import com.example.eCommerce.model.Product;
 import com.example.eCommerce.model.User;
 import com.example.eCommerce.service.CategoryService;
+import com.example.eCommerce.service.OrderService;
 import com.example.eCommerce.service.RoleService;
 import com.example.eCommerce.service.ProductService;
 import com.example.eCommerce.service.UserService;
@@ -51,6 +53,8 @@ public class AdminController {
     @Autowired
     UserService userService;
     @Autowired
+    OrderService orderService;
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     
     @GetMapping("")
@@ -58,7 +62,7 @@ public class AdminController {
         return "adminHome";
     }
     
-    //Category
+    //Category management
     @GetMapping("/categories")
     public String getCategories(Model model) {
         model.addAttribute("categories", categoryService.getAllCategories());
@@ -90,7 +94,7 @@ public class AdminController {
         }
     }
     
-    //Product
+    //Product management
     @GetMapping("/products")
     public String getProducts(Model model) {
         return findProductPaginated(1, "name", "asc", model);
@@ -175,7 +179,7 @@ public class AdminController {
         return "products";
     }
     
-    // Users
+    // Users management
     @GetMapping("/users")
     public String getUsers(Model model) {
         return findUserPaginated(1, "firstName", "asc", model);
@@ -244,5 +248,35 @@ public class AdminController {
         model.addAttribute("userDTO", userDTO);
         
         return "usersAdd";
+    }
+    
+    //Orders management
+    @GetMapping("/orders")
+    public String getOrders(Model model) {
+        return findOrderPaginated(1, "user.firstName", "asc", model);
+    }
+    @GetMapping("/orders/page{pageNo}")
+    public String findOrderPaginated(
+            @PathVariable (value = "pageNo") int pageNo, 
+            @RequestParam("sortField") String sortField, 
+            @RequestParam("sortDir") String sortDir, 
+            Model model
+    ) {
+        int pageSize = 5;
+        
+        Page<Order> page = orderService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        List<Order> orders = page.getContent();
+        
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        
+        model.addAttribute("orders", orders);
+        
+        return "orders";
     }
 }
