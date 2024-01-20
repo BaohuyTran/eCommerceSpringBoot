@@ -4,6 +4,7 @@
  */
 package com.example.eCommerce.controller;
 
+import com.example.eCommerce.dto.OrderDTO;
 import com.example.eCommerce.dto.ProductDTO;
 import com.example.eCommerce.dto.UserDTO;
 import com.example.eCommerce.model.Category;
@@ -12,6 +13,7 @@ import com.example.eCommerce.model.Product;
 import com.example.eCommerce.model.User;
 import com.example.eCommerce.service.CategoryService;
 import com.example.eCommerce.service.OrderService;
+import com.example.eCommerce.service.OrderStatusService;
 import com.example.eCommerce.service.RoleService;
 import com.example.eCommerce.service.ProductService;
 import com.example.eCommerce.service.UserService;
@@ -21,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -54,6 +57,8 @@ public class AdminController {
     UserService userService;
     @Autowired
     OrderService orderService;
+    @Autowired
+    OrderStatusService orderStatusService;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     
@@ -238,11 +243,13 @@ public class AdminController {
     public String updateUser(@PathVariable int id, Model model) {
         User user = userService.getUserById(id).get();
         UserDTO userDTO = new UserDTO();
+        
         userDTO.setId(user.getId());
         userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
         userDTO.setRoleId(user.getRole().getId());
         userDTO.setEmail(user.getEmail());
-        userDTO.setPassword("");
+        userDTO.setPassword(user.getPassword());
         
         model.addAttribute("roles", roleService.getAllRoles());
         model.addAttribute("userDTO", userDTO);
@@ -278,5 +285,37 @@ public class AdminController {
         model.addAttribute("orders", orders);
         
         return "orders";
+    }
+    @GetMapping("/orders/update/{id}")
+    public String GetUpdateOrder(@PathVariable int id, Model model) {
+        Order order = orderService.getOrderById(id).get();
+        OrderDTO orderDTO = new OrderDTO();
+        User user = order.getUser();
+        List<Product> products = order.getProducts();
+        
+        orderDTO.setOrderId(order.getId());
+        orderDTO.setUserId(user.getId());
+        orderDTO.setProductIds(products.stream().map(Product::getId).collect(Collectors.toList()));
+        orderDTO.setPrice(order.getPrice());
+        orderDTO.setAddress(order.getAddress());
+        orderDTO.setPostcode(order.getPostcode());
+        orderDTO.setPhone(order.getPhone());
+        orderDTO.setDescription(order.getDescription());
+        orderDTO.setStatusId(order.getStatus().getId());
+        
+        model.addAttribute("user", user);
+        model.addAttribute("products", products);
+        model.addAttribute("orderDTO", orderDTO);
+        model.addAttribute("status", orderStatusService.getAllStatus());
+        
+        return "orderUpdate";
+    }
+    @PostMapping("/orders/update")
+    public String PostUpdateOrder(@ModelAttribute("orderDTO") OrderDTO orderDTO, Model model) {
+        Order order = orderService.getOrderById(orderDTO.getOrderId()).get();
+        order.setStatus(orderStatusService.getStatusById(orderDTO.getStatusId()).get());
+        orderService.addOrder(order);
+        
+        return "redirect:/admin/orders";
     }
 }

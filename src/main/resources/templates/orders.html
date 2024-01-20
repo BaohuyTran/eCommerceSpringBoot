@@ -50,7 +50,7 @@
             <th scope="col">ID</th>
             <th scope="col">
                 <a th:href="@{'/admin/orders/page' + ${currentPage} + '?sortField=user.firstName&sortDir=' + ${reverseSortDir}}">
-                    Username
+                    User
                 </a>
             </th>
             <th scope="col">Products</th>
@@ -59,19 +59,19 @@
                     Price
                 </a>
             </th>
-            <th scope="col">Address</th>
+<!--            <th scope="col">Address</th>
             <th scope="col">Postcode</th>
             <th scope="col">Phone</th>
-            <th scope="col">Notes</th>
+            <th scope="col">Notes</th>-->
             <th scope="col">Status</th>
-            <th scope="col">Update</th>
+            <th scope="col">Action</th>
         </tr>
         </thead>
         <tbody>
 
         <tr th:each="order, iStat : ${orders}">
             <th scope="row" th:text="${iStat.index + 1}">1</th>
-            <td th:text="${order.user.firstName}">Larry</td>
+            <td th:text="${order.user.email}">Larry</td>
             <td>
                 <span th:each="product : ${order.products}">
                     (<span th:text="${product.id}"></span> - <span th:text="${product.name}"></span>)<br/>
@@ -80,12 +80,12 @@
 
             <!--<td>products</td>-->
             <td th:text="${order.price}">Larry</td>
-            <td th:text="${order.address}">Larry</td>
+<!--            <td th:text="${order.address}">Larry</td>
             <td th:text="${order.postcode}">Larry</td>
             <td th:text="${order.phone}">Larry</td>
-            <td th:text="${order.description}">Larry</td>
-            <td th:text="${order.status.status}">Delete</td>
-            <td><a href="" th:href="@{/admin/orders/update/{id}(id=${order.id})}" class="btn btn-warning">Update</a></td>
+            <td th:text="${order.description}">Larry</td>-->
+            <td th:text="${order.status.status}">Larry</td>
+            <td><a href="" th:href="@{/admin/orders/update/{id}(id=${order.id})}" class="btn btn-warning">See details</a></td>
 
         </tr>
         </tbody>

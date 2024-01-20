@@ -7,6 +7,7 @@ package com.example.eCommerce.service;
 import com.example.eCommerce.model.Order;
 import com.example.eCommerce.repository.OrderRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,5 +47,9 @@ public class OrderService {
         List<Order> orders = orderRepository.findAllByStatus_Id(id);
         
         return orders;
+    }
+    
+    public Optional<Order> getOrderById(int id) {
+        return orderRepository.findById(id);
     }
 }

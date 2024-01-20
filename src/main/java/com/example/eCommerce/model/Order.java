@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -49,4 +48,17 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id", referencedColumnName = "status_id")
     private OrderStatus status;
+    
+    public Order(Order order) {
+        this.user = order.getUser();
+        this.products = order.getProducts();
+        this.price = order.getPrice();
+        this.address = order.getAddress();
+        this.postcode = order.getPostcode();
+        this.phone = order.getPhone();
+        this.description = order.getDescription();
+        this.status = order.getStatus();
+    }
+    
+    public Order() {}
 }
