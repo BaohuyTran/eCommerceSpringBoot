@@ -13,5 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author User
  */
 public interface OrderRepository extends JpaRepository<Order, Integer> {
+    public List<Order> findAllByUser_Id(int id);
     public List<Order> findAllByStatus_Id(int id);
 }

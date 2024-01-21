@@ -86,4 +86,18 @@ public class OrderController {
         GlobalData.cart.clear();
         return "redirect:/shop";
     }
+    
+    @GetMapping("/my-orders")
+    public String getUserOrders (@ModelAttribute("orderDTO")OrderDTO orderDTO, @AuthenticationPrincipal UserAuthentication userDetails, Model model) throws IOException {
+        String userEmail = userDetails.getUsername();
+        User user = userService.getUserByEmail(userEmail).get();
+        
+        List<Order> orders = orderService.getAllOrderByUserId(user.getId());
+        
+//        System.out.print(orders);
+        
+        model.addAttribute("orders", orders);
+        model.addAttribute("cartCount", GlobalData.cart.size());
+        return "my-orders";
+    }
 }

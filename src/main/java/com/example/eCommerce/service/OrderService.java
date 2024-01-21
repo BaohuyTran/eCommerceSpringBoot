@@ -42,7 +42,11 @@ public class OrderService {
     public void addOrder(Order order) {
         orderRepository.save(order);
     }
-    
+    public List<Order> getAllOrderByUserId(int id) {
+        List<Order> orders = orderRepository.findAllByUser_Id(id);
+        
+        return orders;
+    }
     public List<Order> getAllOrderByStatusId(int id) {
         List<Order> orders = orderRepository.findAllByStatus_Id(id);
         

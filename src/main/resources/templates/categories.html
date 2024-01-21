@@ -34,6 +34,9 @@
                     <a class="nav-link" sec:authorize="isAuthenticated() && !hasRole('ROLE_ADMIN')" th:href="@{/cart}" href="#" th:text="'Cart: ' + ${cartCount}">Cart</a>
                 </li>
                 <li class="nav-item active">
+                    <a class="nav-link" sec:authorize="isAuthenticated() && !hasRole('ROLE_ADMIN')" th:href="@{/my-orders}" href="#">My Orders</a>
+                </li>
+                <li class="nav-item active">
                     <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}" href="#">Login</a>
                 </li>
                 <li class="nav-item active">

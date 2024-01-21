@@ -3,5 +3,7 @@ eCommerce website
 - Back-end: Spring Boot
 
 Todo list:
-- User check their orders status (received, delivering, deliverd)
-- Add rating system
+- finish all basic functions
+- docs
+- update sort system
+- filter status to display
