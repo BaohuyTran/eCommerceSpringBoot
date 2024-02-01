@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .failureUrl("/login?error=true")
-                    .defaultSuccessUrl("/")
+                    .defaultSuccessUrl("/shop")
                     .usernameParameter("email")
                     .passwordParameter("password")
                 .and()
@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/login")
+                    .logoutSuccessUrl("/shop")
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")
                 .and()
@@ -75,6 +75,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Override 
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/resources/**", "/static/**", "/images/**", "productImages/**", "/css/**", "/js/**");
+        web.ignoring().antMatchers("/resources/**", "/static/**", "/images/**", "/productImages/**", "/css/**", "/js/**");
     }   
 }
